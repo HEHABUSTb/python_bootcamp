@@ -6,7 +6,7 @@ def tip_calculator():
 
     tip = float(f"1.{tip}")
     result = (bill * tip) / peoples
-    result = round(result, 2)
+    result = "{:.2f}".format(result)
     print(f"Each person should pay: ${result}")
 
 

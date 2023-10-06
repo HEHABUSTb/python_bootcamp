@@ -91,6 +91,7 @@ class PasswordGenerator:
 
         return self.shuffle_password(password)
 
+
 password_generator = PasswordGenerator(nr_letters, nr_numbers, nr_symbols)
 password = password_generator.hard_password()
 print(password)

@@ -10,11 +10,11 @@ def check_player_win(word: list):
         return False
 
 
-def check_player_input(player_input: str, player_input_set: set):
+def check_player_input(player_input: str, player_input_set: set, hidden_word: list):
     if len(player_input) == 1 and player_input.isalpha() is True:
         # print(f'Your letter: {player_input}')
         if player_input in player_input_set:
-            print(f'You already try this letter {player_input}, {player_input_set}')
+            print(f'You already try this letter {player_input}, {player_input_set}\n{hidden_word}')
             return False
         return True
     else:
@@ -46,7 +46,7 @@ while end_game is False:
     player_input = player_input.lower()
 
     # checking input is valid
-    if check_player_input(player_input, player_input_set) is True:
+    if check_player_input(player_input, player_input_set, hidden_word) is True:
         player_input_set.add(player_input)
 
         # checking letter in hidden word
@@ -59,12 +59,10 @@ while end_game is False:
             print(hidden_word, '\n', stages[lifes])
         else:
             lifes -= 1
-            print('Yoy are wrong !', '\n', stages[lifes])
+            print('Yoy are wrong !', '\n', hidden_word, stages[lifes])
             if lifes == 0:
                 print('You lose the game !\n', 'Word was', chosen_word)
                 end_game = True
-            else:
-                print(hidden_word, '\n', stages[lifes])
         if '_' not in hidden_word:
             print('You win!')
             end_game = True

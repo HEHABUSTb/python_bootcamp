@@ -1,5 +1,5 @@
 import random
-from Day_7_Pictures import stages, logo, word_list
+from Art.Day_7_Pictures import stages, logo, word_list
 
 
 # Functions

@@ -1,4 +1,4 @@
-from Day_9_art import logo
+from Art.Day_9_art import logo
 
 #HINT: You can call clear() to clear the output in the console.
 from replit import clear

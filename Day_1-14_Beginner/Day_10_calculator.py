@@ -1,4 +1,4 @@
-from Day_10_Art import logo
+from Art.Day_10_Art import logo
 
 
 # Calculator

@@ -25,10 +25,11 @@ def calculate_score(hand: list):
     score = 0
     for item in hand:
         for key in item:
-            if key == 'Ace' and score > 10:
-                score += 1
-            elif key == 'Ace' and score <= 10:
-                score += item[key]
+            if key == 'Ace':
+                if score > 10:
+                    score += 1
+                else:
+                    score += item[key]
             else:
                 score += item[key]
     return score
@@ -74,10 +75,10 @@ def black_jack():
             casino_hand.extend(deal_card())
             check_casino_hand(casino_hand)
             print_lines()
-            print(f"Your final hand: {your_hand}")
-            print(f"Casino final hand: {casino_hand}")
             your_score = calculate_score(your_hand)
             casino_score = calculate_score(casino_hand)
+            print(f"Your final hand: {your_hand} - {your_score}")
+            print(f"Casino final hand: {casino_hand} - {casino_score}")
             winner(your_score, casino_score)
             print_lines()
 

@@ -15,15 +15,13 @@ def int_input(message: str):
         else:
             print('It should be a digit')
 
+
 def lose_message(attempt: int, ai_number: int, text = 'You lose!'):
     if attempt == 0:
         print(f"{text}: AI number was {ai_number}")
 
-def game():
 
-    print(f"I'm thinking of a number between 1 and 100")
-    ai_number = random.randint(1, 100)
-    print(f'Number: {ai_number}')
+def game():
 
     difficulty = input("Choose a difficulty. Type 'easy' or 'hard': ")
     attempt = int
@@ -32,6 +30,10 @@ def game():
         attempt = 15
     elif difficulty == 'hard':
         attempt = 10
+
+    print(f"I'm thinking of a number between 1 and 100")
+    ai_number = random.randint(1, 100)
+    # print(f'Number: {ai_number}')
 
     while attempt > 0:
         print(f"You have {attempt} attempts remaining to guess the number")

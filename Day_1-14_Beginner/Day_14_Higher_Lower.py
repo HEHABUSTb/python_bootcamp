@@ -5,7 +5,7 @@ from Art.Day_14_Data import data
 clear = lambda: os.system('cls')
 
 
-def choose_blogers(quantity: int, bloggers: list):
+def choose_bloggers(quantity: int, bloggers: list):
     global data
     for i in range(0, quantity):
         len_data = len(data) - 1
@@ -35,7 +35,7 @@ def game():
     final_score = 0
     while running:
 
-        # Check if player going into loop not firs time and print message
+        # Check if player going into loop not first time and print message
         if final_score > 0:
             print("--------------------------------------------------------------------------------------------------------------------------")
             print(f"Ты прав! Угадал {final_score} раза. У {compare_a['name']} больше подписчиков, чем у {compare_b['name']}.")
@@ -49,11 +49,11 @@ def game():
 
         # Finding and take blogger to bloggers
         if final_score == 0:
-            choose_blogers(2, bloggers)
+            choose_bloggers(2, bloggers)
         else:
-            choose_blogers(1, bloggers)
+            choose_bloggers(1, bloggers)
 
-        # Print message about bloggers and input
+        # Print message about bloggers and input message
         compare_a = bloggers[0]
         compare_b = bloggers[1]
         print(f"Сравни А: {compare_a['name']} - {compare_a['description']}.")
@@ -61,7 +61,7 @@ def game():
         print(f"Против B: {compare_b['name']} - {compare_b['description']}.")
 
         # TO_DO: Нужно проверить буквы
-        answer = input("У кого больше подписчиков? Введи А или B: ")
+        answer = input("У кого больше подписчиков? Введи А или B: ").upper()
 
         # Define winner
         winner = choose_winner(compare_a, compare_b)
@@ -77,8 +77,8 @@ def game():
             print(f"Ты ошибся! У {compare_a['name']} - {compare_a['subscribers']}, а {compare_b['name']} имеет {compare_b['subscribers']}")
 
             # Continue the game or terminate
-            answer2 = input("Хочешь начать ещё раз ? Y or N: ")
-            if answer2 == 'Y' or answer2 == 'y':
+            answer2 = input("Хочешь начать ещё раз ? Y or N: ").upper()
+            if answer2 == 'Y':
                 game()
             else:
                 running = False

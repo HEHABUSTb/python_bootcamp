@@ -140,4 +140,12 @@ data = [
      'country': 'UKRAINE'
     },
 
+{
+     'name': 'urbanturizm',
+     'subscribers': '798k',
+     'number': 798000,
+     'description': 'Бродил по заброшкам',
+     'country': 'RUSSIA'
+    },
+
 ]

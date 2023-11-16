@@ -51,14 +51,16 @@ class Coffe:
                 self.milk -= ingredients['ingredients'][ingredient]
 
     def insert_coins(self, drink: str):
+
         print(f"Please insert coins")
         cena = self.MENU[drink]['cost']
-        quarters = int(input('How many quarters?: '))
-        dimes = int(input('How many dimes?: '))
-        nickels = int(input('How many nickels?: '))
-        pennies = int(input('How many pennies?: '))
 
-        summa = (quarters * 0.25) + (dimes * 0.10) + (nickels * 0.05) + (pennies * 0.01)
+        summa = 0
+        summa += int(input('How many quarters?: ')) * 0.25
+        summa += int(input('How many dimes?: ')) * 0.10
+        summa += int(input('How many nickels?: ')) * 0.05
+        summa += int(input('How many pennies?: ')) * 0.01
+
         change = summa - cena
 
         if change >= 0:

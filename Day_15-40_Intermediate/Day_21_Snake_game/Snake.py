@@ -27,6 +27,35 @@ class Snake:
             segment.setposition(x=x, y=segment_1.ycor())
             self.segments.append(segment)
 
+    def add_segment(self):
+        last_segment = self.segments[-1]
+        new_x = last_segment.xcor()
+        new_y = last_segment.ycor()
+        print(new_x)
+        print(new_y)
+        print(f"loooking {last_segment.heading()}")
+
+        if last_segment.heading() == RIGHT:
+            print('RIGHT')
+            new_x = last_segment.xcor() - 20
+        elif last_segment.heading() == LEFT:
+            print('LEFT')
+            new_x = last_segment.xcor() + 20
+        elif last_segment.heading() == UP:
+            print('UP')
+            new_y = last_segment.ycor() - 20
+        elif last_segment.heading() == DOWN:
+            print('DOWN')
+            new_y = last_segment.ycor() + 20
+
+        print(new_x)
+        print(new_y)
+
+        new_segment = last_segment.clone()
+        new_segment.setposition(x=new_x, y=new_y)
+        self.segments.append(new_segment)
+
+
     def move(self):
         for seg_num in range(len(self.segments) - 1, 0, -1):
             new_x = self.segments[seg_num - 1].xcor()

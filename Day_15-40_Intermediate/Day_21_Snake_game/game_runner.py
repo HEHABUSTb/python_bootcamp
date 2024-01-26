@@ -34,7 +34,7 @@ while game_is_on:
         score.score += 1
         score.update_score()
 
-        snake.add_segment()
+        snake.extend()
 
     # Detect collision with wall
     head_x = snake.head.xcor()

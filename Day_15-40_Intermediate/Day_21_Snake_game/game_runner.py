@@ -1,5 +1,5 @@
 import time
-from turtle import Screen
+from turtle import Screen, Turtle
 from Snake import Snake
 from Food import Food
 from scoreboard import ScoreBoard
@@ -39,7 +39,7 @@ while game_is_on:
     # Detect collision with wall
     head_x = snake.head.xcor()
     head_y = snake.head.ycor()
-    if head_x > 280 or head_x < -280 or head_y > 280 or head_y < -280:
+    if head_x > 290 or head_x < -290 or head_y > 290 or head_y < -290:
         game_is_on = False
         score.game_over_message()
 

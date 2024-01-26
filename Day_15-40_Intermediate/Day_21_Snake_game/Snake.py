@@ -14,6 +14,7 @@ class Snake:
 
         self.segments = []
         self.create_snake()
+        self.wall()
         self.head = self.segments[0]
 
     def create_snake(self):
@@ -26,6 +27,19 @@ class Snake:
         new_segment.penup()
         new_segment.goto(position)
         self.segments.append(new_segment)
+
+
+    def wall(self):
+        wall = Turtle()
+        wall.hideturtle()
+        wall.color('white')
+        wall.penup()
+        wall.goto(x=-290, y=-290)
+        wall.pendown()
+        wall.goto(x=290, y=-290)
+        wall.goto(x=290, y=290)
+        wall.goto(x=-290, y=290)
+        wall.goto(x=-290, y=-290)
 
     def extend(self):
         position = self.segments[-1].position()

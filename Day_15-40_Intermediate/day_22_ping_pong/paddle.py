@@ -42,7 +42,7 @@ class Paddle:
         new_x = self.paddles[0].xcor()
         new_y = self.paddles[0].ycor()
         if new_y < 260:
-                new_y += self.speed
+            new_y += self.speed
         self.paddles[0].goto(x=new_x, y=new_y)
 
     def move_right_paddle_up(self):

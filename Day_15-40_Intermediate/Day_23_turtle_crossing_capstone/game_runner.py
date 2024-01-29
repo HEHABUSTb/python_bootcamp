@@ -21,21 +21,19 @@ while game_is_on:
     time.sleep(0.1)
     screen.update()
 
-    # Create random cars
+    # Create random cars and move them
     cars.create_car()
-
-    # move cars
     cars.move_cars()
 
-    # Detect collision
+    # Detect collision with car
     for car in cars.cars:
         if turtle.turtle.distance(car) < 20:
             scoreboard.game_over_message()
             game_is_on = False
 
+    # Detect finish and level up
     if turtle.turtle.ycor() > 280:
         turtle.turtle.goto((0, -280))
-        print('Level UP')
         scoreboard.score += 1
         scoreboard.update_score()
         cars.speed_up()

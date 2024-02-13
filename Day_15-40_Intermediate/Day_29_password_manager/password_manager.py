@@ -1,10 +1,34 @@
 from tkinter import *
 from tkinter import messagebox
-import csv
+import csv, random
 
 FONT = ('Courier', 12, 'normal')
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
+def password():
+    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
+
+    nr_letters = random.randint(8, 10)
+    nr_symbols = random.randint(2, 4)
+    nr_numbers = random.randint(2, 4)
+
+    # Generate password chars
+    password_list = []
+    password_list += [random.choice(letters) for _ in range(nr_letters)]
+    password_list += [random.choice(numbers) for _ in range(nr_numbers)]
+    password_list += [random.choice(symbols) for _ in range(nr_symbols)]
+    # print(password_list)
+
+    random.shuffle(password_list)
+
+    # Save password as a string and put in Entry field
+    password = "".join(password_list)
+    password_entry.delete(0, END)
+    password_entry.insert(0, f"{password}")
+
+    # print(f"Your password is: {password}")
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def save(mode='a'):
@@ -72,7 +96,7 @@ password_entry = Entry(width=21)
 password_entry.grid(row=3, column=1, sticky="EW")
 
 # Buttons
-password_button = Button(text='Generate Password')
+password_button = Button(text='Generate Password', command=password)
 password_button.grid(row=3, column=2, sticky="EW")
 
 add_button = Button(text='Add', width=35, command=save)

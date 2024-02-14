@@ -33,6 +33,22 @@ def password():
     password_entry.insert(0, f"{password}")
 
     # print(f"Your password is: {password}")
+# ---------------------------- SEARCH PASSWORD ------------------------------- #
+def search():
+    # Collect website name and lower
+    website_name = website_entry.get().lower()
+    # print(website_name)
+    with open('secret.json') as file:
+        data = json.load(file)
+        # Bring all key value to lower register
+        data_lower = {key.lower(): value for key, value in data.items()}
+
+        if website_name in data_lower:
+            messagebox.showinfo(title='Search', message=f"These your data:\nUsername: {data['site']['email']}\nPassword: {data['site']['password']}")
+        else:
+            messagebox.showinfo(title='Search', message=f"Can't find data with this name: {website_name}")
+
+
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def save(mode='a'):
@@ -45,7 +61,7 @@ def save(mode='a'):
     # header = ['website', 'username', 'password']
     data = {
         website: {
-            'email:': username,
+            'email': username,
             'password': password
         }
     }
@@ -67,17 +83,18 @@ def save(mode='a'):
                 data_json = json.load(file)
 
         except (FileNotFoundError, JSONDecodeError) as e:
-            print(f"Some error was appeared in save function, check logs: {e}")
+            # If file doesn't exist or empty catch this Errors and go to 'w' mode
+            print(f"Some error was appeared in save function, json file empty or doesn't exist: {e}")
 
-        # Save data in secret.json
-        with open('secret.json', 'w') as file:
-            data_json.update(data)
-            json.dump(data_json, file, indent=4)
+        finally:
+            # Save data in secret.json
+            with open('secret.json', 'w') as file:
+                data_json.update(data)
+                json.dump(data_json, file, indent=4)
 
-
-        # Clearing entry fields
-        website_entry.delete(0, END)
-        password_entry.delete(0, END)
+            # Clearing entry fields
+            website_entry.delete(0, END)
+            password_entry.delete(0, END)
 
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -104,7 +121,7 @@ password_text.grid(row=3, column=0, sticky="EW")
 
 # Fields Entry
 website_entry = Entry(width=35)
-website_entry.grid(row=1, column=1, columnspan=2, sticky="EW")
+website_entry.grid(row=1, column=1, sticky="EW")
 website_entry.focus()
 
 username_entry = Entry(width=35)
@@ -119,6 +136,9 @@ password_button.grid(row=3, column=2, sticky="EW")
 
 add_button = Button(text='Add', width=35, command=save)
 add_button.grid(row=4, column=1, columnspan=2, sticky="EW")
+
+search_button = Button(text='Search', command=search)
+search_button.grid(row=1, column=2, sticky="EW")
 
 
 window.mainloop()

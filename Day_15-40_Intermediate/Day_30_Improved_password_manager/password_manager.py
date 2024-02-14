@@ -35,23 +35,29 @@ def password():
     # print(f"Your password is: {password}")
 # ---------------------------- SEARCH PASSWORD ------------------------------- #
 def search():
-    # Collect website name and lower
-    website_name = website_entry.get().lower()
-    # print(website_name)
-    with open('secret.json') as file:
-        data = json.load(file)
-        # Bring all key value to lower register
-        data_lower = {key.lower(): value for key, value in data.items()}
+    try:
+        # Collect website name and lower
+        website_name = website_entry.get().lower()
+        # print(website_name)
+        with open('secret.json') as file:
+            data = json.load(file)
+            # Bring all key value to lower register
+            data_lower = {key.lower(): value for key, value in data.items()}
 
-        if website_name in data_lower:
-            messagebox.showinfo(title='Search', message=f"These your data:\nUsername: {data['site']['email']}\nPassword: {data['site']['password']}")
-        else:
-            messagebox.showinfo(title='Search', message=f"Can't find data with this name: {website_name}")
+            if website_name in data_lower:
+                email = data['site']['email']
+                password = data['site']['password']
+                messagebox.showinfo(title='Search', message=f"These your data:\nUsername: {email}\nPassword: {password}")
+            else:
+                messagebox.showinfo(title='Search', message=f"Can't find data with this name: {website_name}")
+    except FileNotFoundError as e:
+        print(f"{e}")
+        messagebox.showinfo(title='No data', message=f"No data file found")
 
 
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
-def save(mode='a'):
+def save():
     # Set mode='w' if you want to rewrite file
     # Get data from entry fields
     website = website_entry.get()

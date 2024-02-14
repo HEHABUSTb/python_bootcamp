@@ -1,8 +1,10 @@
+from json import JSONDecodeError
 from tkinter import *
 from tkinter import messagebox
 import csv
 import random
 import json
+
 
 FONT = ('Courier', 12, 'normal')
 
@@ -47,6 +49,7 @@ def save(mode='a'):
             'password': password
         }
     }
+    data_json = {}
 
     if '' in data:
         messagebox.showerror(title='Some Fields are empty', message="Please don't leave any fields empty!")
@@ -57,14 +60,18 @@ def save(mode='a'):
     if answer is False:
         pass
     else:
-        # Read data from 'secret.json'
-        with open('secret.json', 'r') as file:
-            # print(data)
-            data_json = json.load(file)
-            data_json.update(data)
+        try:
+            # Read data from 'secret.json'
+            with open('secret.json', 'r') as file:
+                # print(data)
+                data_json = json.load(file)
+
+        except (FileNotFoundError, JSONDecodeError) as e:
+            print(f"Some error was appeared in save function, check logs: {e}")
 
         # Save data in secret.json
         with open('secret.json', 'w') as file:
+            data_json.update(data)
             json.dump(data_json, file, indent=4)
 
 

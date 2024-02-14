@@ -93,8 +93,8 @@ def save(mode='a'):
                 json.dump(data_json, file, indent=4)
 
             # Clearing entry fields
-            website_entry.delete(0, END)
             password_entry.delete(0, END)
+            messagebox.showinfo(title='Password was saved',  message=f"Password successfully was saved")
 
 
 # ---------------------------- UI SETUP ------------------------------- #

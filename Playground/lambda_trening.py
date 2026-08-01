@@ -50,3 +50,9 @@ print(reduce(lambda x, y: x * y, numbers))
 
 result = reduce(lambda acc, x: acc + str(x), [1, 2, 3, 4], "")
 print(result)
+
+x = 100
+y = 4
+
+news = lambda x, y: "Get News" if y % x > 5 else "No news"
+print(news(x, y))

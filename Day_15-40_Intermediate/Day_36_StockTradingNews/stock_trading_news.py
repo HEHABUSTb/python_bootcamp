@@ -1,7 +1,7 @@
 import os
 
 import requests
-from env import STOCK_API
+from env import STOCK_API, NEWS_API
 
 STOCK = "TSLA"
 COMPANY_NAME = "Tesla Inc"
@@ -9,6 +9,8 @@ COMPANY_NAME = "Tesla Inc"
 ## STEP 1: Use https://www.alphavantage.co
 # When STOCK price increase/decreases by 5% between yesterday and the day before yesterday then print("Get News").
 API_KEY = STOCK_API
+
+from_date = ""
 
 def get_daily_prices():
     endpoint = "https://www.alphavantage.co/query"
@@ -29,22 +31,54 @@ def get_daily_prices():
     latest_date = dates[0]
     prev_date = dates[1]
 
+    global from_date
+    from_date = prev_date
+
     latest_day = data["Time Series (Daily)"][latest_date]
     prev_day  = data["Time Series (Daily)"][prev_date]
 
-    print(latest_date)
-    print(latest_day)
-    print(latest_day['4. close'])
+    print(f"latest date:{latest_date}")
+    print(f"data:{latest_day}")
+    print(f"Close price:{latest_day['4. close']}")
 
-    print(prev_date)
-    print(prev_day)
-    print(prev_day['1. open'])
+    print(f"prev_date:{prev_date}")
+    print(f"data:{prev_day}")
+    print(f"Open price:{prev_day['1. open']}")
 
-get_daily_prices()
+    return float(latest_day['4. close']), float(prev_day['1. open'])
+
+need_news = lambda new_price, old_price: "Get News" if abs(old_price - new_price) / old_price * 100 > 5  else "No news"
+
+new_price, old_price = get_daily_prices()
+print(need_news(new_price, old_price))
 
 
 ## STEP 2: Use https://newsapi.org
 # Instead of printing ("Get News"), actually get the first 3 news pieces for the COMPANY_NAME.
+endpoint = "https://newsapi.org/v2/everything"
+print(from_date)
+params = {
+    "q": COMPANY_NAME,
+    "from": from_date,
+    "sortBy": "popularity",
+    "apiKey": NEWS_API,
+}
+
+response = requests.get(endpoint, params=params)
+response.raise_for_status()
+
+print(response.json())
+
+news = response.json()['articles']
+i = 0
+for new in news:
+    if i > 2:
+        break
+    print(new['title'])
+    print(new['description'])
+    print(new['url'])
+    print("///////////////////////////////////////////////")
+    i += 1
 
 ## STEP 3: Use https://www.twilio.com
 # Send a seperate message with the percentage change and each article's title and description to your phone number.

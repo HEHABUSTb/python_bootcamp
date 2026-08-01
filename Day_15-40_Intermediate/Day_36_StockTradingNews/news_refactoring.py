@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 STOCK_SYMBOL = "TSLA"
 COMPANY_NAME = "Tesla Inc"
-PRICE_CHANGE_THRESHOLD = 5.0  # в процентах
+PRICE_CHANGE_THRESHOLD = 2.0  # в процентах
 NEWS_ARTICLES_LIMIT = 3
 
 STOCK_ENDPOINT = "https://www.alphavantage.co/query"

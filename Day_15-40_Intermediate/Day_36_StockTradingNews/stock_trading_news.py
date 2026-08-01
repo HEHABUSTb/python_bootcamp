@@ -1,5 +1,3 @@
-import os
-
 import requests
 from env import STOCK_API, NEWS_API
 

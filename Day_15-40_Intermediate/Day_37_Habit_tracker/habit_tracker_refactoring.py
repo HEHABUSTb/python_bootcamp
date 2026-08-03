@@ -4,7 +4,6 @@ from dataclasses import dataclass
 
 from datetime import datetime
 
-from PyQt6.sip import voidptr
 from env import API_KEY
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")

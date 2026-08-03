@@ -3,6 +3,8 @@ import logging
 from dataclasses import dataclass
 
 from datetime import datetime
+
+from PyQt6.sip import voidptr
 from env import API_KEY
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
@@ -53,6 +55,21 @@ class PixelaClient:
         endpoint = f"{PIXELA_BASE_URL}/{self.user_name}/graphs/{self.graph_id}/{date}"
         payload = {"quantity": str(value)}
         return self._put(endpoint, payload, headers=self._auth_headers)
+
+    @staticmethod
+    def classify_response(status_code: int) -> None:
+        match status_code:
+            case 200 | 201 | 204:
+                logger.info("Success code:%d", status_code)
+            case 301 | 302:
+                logger.warning("Redirect code:%d", status_code)
+            case status_code if 400 <= status_code < 500:
+                logger.error("Client error status code:%d", status_code)
+            case status_code if status_code >= 500:
+                logger.error("Server error status code:%d", status_code)
+            case _:
+                logger.error("Unknown status code:%d", status_code)
+
 
     @staticmethod
     def _post(endpoint: str, payload: dict, headers: dict) -> dict:

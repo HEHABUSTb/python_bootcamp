@@ -35,7 +35,7 @@ class BaseDataClass(ABC):
     @staticmethod
     def _get(endpoint: str, payload: dict, headers: dict) -> requests.Response:
         response = requests.get(url=endpoint, json=payload, headers=headers, timeout=5)
-        pprint(response.json())
+        # pprint(response.json())
         response.raise_for_status()
         return response
 

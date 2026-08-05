@@ -32,11 +32,16 @@ class FlightSearch:
             "outbound_date": outbound_date
         })
 
-        best_flights = results["best_flights"]
+        # pprint(results)
+
+        best_flights = results.get("best_flights", [])
+        if not best_flights:
+            print("No flights found")
+            return []
         # pprint(best_flights)
 
         result = [FlightData.from_json(flight=flight, departure_id=self.departure_id, arrival_id=arrival_id) for flight in best_flights]
-        pprint(result)
+        # pprint(result)
 
         return result
 

@@ -1,0 +1,14 @@
+# Secrets / environment
+.env
+env.py
+*.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# IDE
+.idea/

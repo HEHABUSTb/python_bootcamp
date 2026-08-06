@@ -5,3 +5,4 @@
 /httpRequests/
 # API-KEYS
 env.py
+.idea

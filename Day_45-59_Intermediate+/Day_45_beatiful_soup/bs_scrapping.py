@@ -16,8 +16,12 @@ for tl in titlelines:
 
     subtext = tl.find_parent("tr").find_next_sibling("tr")
     score_tag = subtext.select_one("span.score")
+    score = int(score_tag.text.split()[0])
 
-    articles.append(SimpleNamespace(title=link.getText(), link=link['href'], score=score_tag.text))
+    articles.append(SimpleNamespace(title=link.getText(), link=link['href'], score=score))
+
+articles.sort(key=lambda article: article.score, reverse=True)
+print(articles)
 
 
 pprint(articles)

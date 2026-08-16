@@ -2,8 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
 from types import SimpleNamespace
-import ytmusicapi
-
+from ytmusicapi import YTMusic
 
 
 def validate_date(retry_number: int = 3) -> str | None:
@@ -51,6 +50,33 @@ def get_best_100_songs(date_str: str = "2026-04-18") -> list[SimpleNamespace]:
 
 best_songs = get_best_100_songs()
 print(best_songs)
+
+yt = YTMusic("browser.json")
+playlists = yt.get_library_playlists()
+print(f"Found {len(playlists)} playlists in your library.")
+
+
+playlist_name = f"Back in 2026-04-18"
+playlistId = ""
+
+for playlist in playlists:
+    # print(playlist)
+    if playlist_name == playlist['title']:
+        playlistId = playlist['playlistId']
+
+if playlistId == "":
+    playlistId = yt.create_playlist(playlist_name, playlist_name)
+
+
+# Add song to playlist
+for song in best_songs:
+    search_results = yt.search(song.song)
+    if search_results[0].get('videoId'):
+        print(f"Added song:'{song.song}'")
+        yt.add_playlist_items(playlistId, [search_results[0]['videoId']])
+    else:
+        print(f"Skipped:'{song.song}'")
+
 
 
 

@@ -51,8 +51,6 @@ class Tracker:
         response = self._get(self.url)
         return tracker.get_price_from_response(response)
 
-
-
     @staticmethod
     def _get(url: str) -> str:
         response = requests.get(f"{url}")
@@ -92,4 +90,3 @@ if __name__ == "__main__":
 
     if new_price < product.expected_price:
         EmailAlert().send_email_alert(product, new_price)
-

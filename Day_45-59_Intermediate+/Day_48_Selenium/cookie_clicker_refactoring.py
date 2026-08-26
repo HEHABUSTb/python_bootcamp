@@ -21,18 +21,39 @@ UNLOCKED_UPGRADES = (By.CSS_SELECTOR, ".crate.upgrade.enabled")
 BASE_URL = r"https://ozh.github.io/cookieclicker/"
 
 
-
-
 class CookieClicker:
 
     def __init__(self, ):
         self.driver = webdriver.Chrome()
         self.timelimit = 1
 
-    def main(self):
-        self.open_browser()
-        self.select_language()
-        self.play_game()
+    def click_cookie(self):
+        try:
+            self.driver.find_element(*COOKIE_BUTTON).click()
+        except StaleElementReferenceException:
+            print("Cookie is stale, waiting...")
+
+        print(f"Cookies per second:'{self.driver.find_element(*COOKIE_NUMBER).text}'")
+
+    def find_best_product(self) -> WebElement | None:
+        products = self.driver.find_elements(*UNLOCKED_PRODUCTS)
+        if not products:
+            print("No products found")
+            return None
+
+        best_price = 0
+        best_index = 0
+
+        for i in range(len(products)):
+            price = products[i].find_element(*PRICE)
+            if best_price < int(price.text):
+                best_price = int(price.text)
+                best_index = i
+
+        return products[best_index]
+
+    def open_browser(self):
+        self.driver.get(BASE_URL)
 
     def play_game(self):
         # Start actually play
@@ -52,40 +73,18 @@ class CookieClicker:
             # just click cookie
             self.click_cookie()
 
-    def click_cookie(self):
-        try:
-            self.driver.find_element(*COOKIE_BUTTON).click()
-        except StaleElementReferenceException:
-            print("Cookie is stale, waiting...")
-
-        print(f"Cookies per second:'{self.driver.find_element(*COOKIE_NUMBER).text}'")
-
-    def open_browser(self):
-        self.driver.get(BASE_URL)
+    def main(self):
+        self.open_browser()
+        self.select_language()
+        self.play_game()
 
     def select_language(self):
         language_button = WebDriverWait(self.driver, 20).until(
             EC.element_to_be_clickable(LANGUAGE_BUTTON))
         language_button.click()
 
-    def find_best_product(self) -> WebElement | None:
-        products = self.driver.find_elements(*UNLOCKED_PRODUCTS)
-        if not products:
-            print("No products found")
-            return None
 
-        best_price = 0
-        best_index = 0
-
-        for i in range(len(products)):
-            price = products[i].find_element(*PRICE)
-            if best_price < int(price.text):
-                best_price = int(price.text)
-                best_index = i
-
-        return products[best_index]
 
 if __name__ == "__main__":
     cookie_clicker = CookieClicker()
     cookie_clicker.main()
-

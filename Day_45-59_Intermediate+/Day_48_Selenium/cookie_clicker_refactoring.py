@@ -1,3 +1,5 @@
+import time
+
 from selenium import webdriver
 from selenium.common import StaleElementReferenceException
 from selenium.webdriver.common.by import By
@@ -25,7 +27,8 @@ class CookieClicker:
 
     def __init__(self, ):
         self.driver = webdriver.Chrome()
-        self.timelimit = 1
+        self.timelimit = 1 # minutes
+        self.upgrade_check_interval = 5 # seconds
 
     def click_cookie(self):
         try:
@@ -41,24 +44,16 @@ class CookieClicker:
             print("No products found")
             return None
 
-        best_price = 0
-        best_index = 0
+        best_product = max(products, key=lambda product: int(product.find_element(*PRICE).text), default=None)
 
-        for i in range(len(products)):
-            price = products[i].find_element(*PRICE)
-            if best_price < int(price.text):
-                best_price = int(price.text)
-                best_index = i
-
-        return products[best_index]
+        return best_product
 
     def open_browser(self):
         self.driver.get(BASE_URL)
 
     def play_game(self):
         # Start actually play
-        timelimit = 1  # mins
-        end_time = datetime.now() + timedelta(minutes=timelimit)
+        end_time = datetime.now() + timedelta(minutes=self.timelimit)
         next_product_check = datetime.now()
 
         while datetime.now() < end_time:
@@ -68,15 +63,19 @@ class CookieClicker:
                 best_product = self.find_best_product()
                 if best_product:
                     best_product.click()
-                next_product_check = datetime.now() + timedelta(seconds=5)
+                next_product_check = datetime.now() + timedelta(seconds=self.upgrade_check_interval)
 
             # just click cookie
             self.click_cookie()
+            time.sleep(0.01)
 
     def main(self):
-        self.open_browser()
-        self.select_language()
-        self.play_game()
+        try:
+            self.open_browser()
+            self.select_language()
+            self.play_game()
+        finally:
+            self.driver.quit()
 
     def select_language(self):
         language_button = WebDriverWait(self.driver, 20).until(

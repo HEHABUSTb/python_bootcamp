@@ -1,14 +1,8 @@
-from codecs import ignore_errors
-from dataclasses import dataclass
-from pprint import pprint
-
 from selenium import webdriver
 from selenium.common import StaleElementReferenceException
 from selenium.webdriver.common.by import By
-from types import SimpleNamespace
 from datetime import datetime, timedelta
 
-from selenium.webdriver.common.devtools.v85.network import Cookie
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -38,9 +32,9 @@ class CookieClicker:
     def main(self):
         self.open_browser()
         self.select_language()
-        self.click_cookie()
+        self.play_game()
 
-    def click_cookie(self):
+    def play_game(self):
         # Start actually play
         timelimit = 1  # mins
         end_time = datetime.now() + timedelta(minutes=timelimit)
@@ -56,7 +50,13 @@ class CookieClicker:
                 next_product_check = datetime.now() + timedelta(seconds=5)
 
             # just click cookie
+            self.click_cookie()
+
+    def click_cookie(self):
+        try:
             self.driver.find_element(*COOKIE_BUTTON).click()
+        except StaleElementReferenceException:
+            print("Cookie is stale, waiting...")
 
         print(f"Cookies per second:'{self.driver.find_element(*COOKIE_NUMBER).text}'")
 

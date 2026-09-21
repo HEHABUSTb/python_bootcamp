@@ -19,48 +19,38 @@ NOT_ACCEPTED_BUTTON = (By.CSS_SELECTOR, "button.btn-secondary")
 NOPE_BUTTON = (By.CSS_SELECTOR, "button.btn-nope")
 LIKE_BUTTON = (By.CSS_SELECTOR, "button.btn-like")
 
-chrome_options = webdriver.ChromeOptions()
-chrome_options.add_experimental_option("detach", True) # Don't close browser for debug
+def push_button(selector):
+    button = wait.until(ec.element_to_be_clickable(selector))
+    button.click()
 
-driver = webdriver.Chrome(options=chrome_options)
+# Create browser
+driver = webdriver.Chrome()
 wait = WebDriverWait(driver, 5)
 driver.get(TINDER_URL)
 
 # Step 1: pass through login
-login_button = wait.until(ec.element_to_be_clickable(LOGIN_BUTTON))
-login_button.click()
-
-facebark_login_button = wait.until(ec.element_to_be_clickable(LOGIN_BUTTON_FACEBARK))
-facebark_login_button.click()
+push_button(LOGIN_BUTTON)
+push_button(LOGIN_BUTTON_FACEBARK)
 
 # switch to the login window
 fb_login_window = driver.window_handles[1]
 driver.switch_to.window(fb_login_window)
-print(driver.title)
+assert driver.title == "Facebark"
 
-email_input = driver.find_element(*INPUT_EMAIL)
-email_input.send_keys("test@email.com")
-
-password_input = driver.find_element(*INPUT_PASSWORD)
-password_input.send_keys("1234")
-
-submit_button = driver.find_element(*SUBMIT_BUTTON)
-submit_button.click()
+driver.find_element(*INPUT_EMAIL).send_keys("test@email.com")
+driver.find_element(*INPUT_PASSWORD).send_keys("1234")
+push_button(SUBMIT_BUTTON)
 
 driver.switch_to.window(driver.window_handles[0])
-print(driver.title)
+assert driver.title == "Tindog"
 
 # Step 2: Dismiss all requests
-allow_button = wait.until(ec.element_to_be_clickable(ALLOW_BUTTON))
-allow_button.click()
+push_button(ALLOW_BUTTON)
+push_button(NOT_ACCEPTED_BUTTON)
 
-not_accepted_button = wait.until(ec.element_to_be_clickable(NOT_ACCEPTED_BUTTON))
-not_accepted_button.click()
+push_button(ALLOW_BUTTON)
 
-allow_button = wait.until(ec.element_to_be_clickable(ALLOW_BUTTON))
-allow_button.click()
-
-# TO DO: check that appear <main class="tindog-swipe-container">
+wait.until(ec.presence_of_element_located((By.CSS_SELECTOR, "main.tindog-swipe-container")))
 
 # Step 3: Hit like 10 times
 
@@ -70,3 +60,6 @@ for i in range(10):
         like_button.click()
     except ElementClickInterceptedException:
         driver.find_element(By.CSS_SELECTOR, value='.match-popup a').click()
+
+input(r"Should i close browser?")
+driver.quit()

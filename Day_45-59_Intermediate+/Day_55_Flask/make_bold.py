@@ -3,11 +3,9 @@ from flask import Flask
 app = Flask(__name__)
 
 def make_bold(function):
-    def wrapper_function():
-        text = function()
-        bold_text = '<b>' + text + '</b>'
-        return bold_text
-    return wrapper_function
+    def wrapper():
+        return '<b>' + function() + '</b>'
+    return wrapper
 
 
 @app.route("/")

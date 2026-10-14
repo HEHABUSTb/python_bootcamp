@@ -20,7 +20,7 @@ def guess(name):
 
     name = name.capitalize()
 
-    return render_template("index.html", name=name, age=age, gender=gender)
+    return render_template("guess.html", name=name, age=age, gender=gender)
 
 
 

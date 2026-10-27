@@ -21,7 +21,3 @@ print(f"Addition: {calc.first_number} + {calc.second_number} = {calc.addition()}
 print(f"Subtraction: {calc.first_number} - {calc.second_number} = {calc.subtraction()}")
 print(f"Multiplication: {calc.first_number} * {calc.second_number} = {calc.multiplication()}")
 print(f"Division: {calc.first_number} / {calc.second_number} = {calc.division()}")
-
-
-with open('file1.txt') as file:
-    print(file.)

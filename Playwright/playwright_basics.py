@@ -26,4 +26,9 @@ def test_core_locators(page: Page):
     fill_box_field(page, 'Password:', 'password')
 
     page.get_by_role("combobox").select_option(value="teach")
+
+    page.locator("input#terms").check()
+
+    page.locator("input#signInBtn").click()
+
     time.sleep(1)

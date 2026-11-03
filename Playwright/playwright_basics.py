@@ -1,6 +1,7 @@
 import time
 
-from playwright.sync_api import Page
+from playwright.sync_api import Page, expect
+
 
 def fill_box_field(page: Page, label: str, value: str):
     box = page.get_by_label(label)
@@ -26,9 +27,21 @@ def test_core_locators(page: Page):
     fill_box_field(page, 'Password:', 'password')
 
     page.get_by_role("combobox").select_option(value="teach")
-
     page.locator("input#terms").check()
-
     page.locator("input#signInBtn").click()
+
+    time.sleep(1)
+
+def test_wrong_password(page: Page):
+    page.goto("https://rahulshettyacademy.com/loginpagePractise/")
+
+    fill_box_field(page, 'Username:', 'rahulshettyacademy')
+    fill_box_field(page, 'Password:', 'wrong_password')
+
+    page.get_by_role("combobox").select_option(value="teach")
+    page.locator("input#terms").check()
+    page.locator("input#signInBtn").click()
+
+    expect(page.get_by_text("Incorrect username/password.")).to_be_visible()
 
     time.sleep(1)

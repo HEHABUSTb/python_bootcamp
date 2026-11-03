@@ -1,6 +1,5 @@
 import time
-
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page, expect, Playwright
 
 
 def fill_box_field(page: Page, label: str, value: str):
@@ -44,4 +43,9 @@ def test_wrong_password(page: Page):
 
     expect(page.get_by_text("Incorrect username/password.")).to_be_visible()
 
+def test_firefox_browser(playwright: Playwright):
+    firefox = playwright.firefox.launch(headless=False)
+    firefox_page = firefox.new_page()
+
+    firefox_page.goto("https://rahulshettyacademy.com/loginpagePractise/")
     time.sleep(1)

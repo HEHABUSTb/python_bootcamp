@@ -24,3 +24,15 @@ def test_dynamic_selection(page: Page):
     page.get_by_text('Checkout').click()
 
     expect(page.locator(".media-body")).to_have_count(count=2)
+
+def test_child_window_handles(page: Page):
+    page.goto("https://rahulshettyacademy.com/loginpagePractise/")
+
+    # Go through a link to child window
+    with page.expect_popup() as child_window:
+        page.get_by_text('Free Access to InterviewQues/ResumeAssistance/Material').click()
+        child_page = child_window.value
+
+        text = child_page.locator("p.red").text_content()
+        print(text)
+    time.sleep(2)

@@ -34,5 +34,9 @@ def test_child_window_handles(page: Page):
         child_page = child_window.value
 
         text = child_page.locator("p.red").text_content()
-        print(text)
+        print(text) # Please email us at mentor@rahulshettyacademy.com with below template to receive response
+
+        email = next((word for word in text.split() if '@' in word), 'Email not found')
+        print(email)
+        assert email == 'mentor@rahulshettyacademy.com'
     time.sleep(2)

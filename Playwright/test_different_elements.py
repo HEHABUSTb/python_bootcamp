@@ -53,7 +53,6 @@ def test_handle_alert(page: Page):
 
     page.locator('input#confirmbtn').click()
 
-
     # Frame handling
     frame = page.frame_locator('iframe#courses-iframe')
     frame.get_by_role('link', name='All Access plan').click()
@@ -69,3 +68,12 @@ def test_displayed_element(page: Page):
     # push the hide button
     page.locator('input#hide-textbox').click()
     expect(hide_element).to_be_hidden()
+
+def test_mouse_hover(page: Page):
+    page.goto("https://rahulshettyacademy.com/AutomationPractice/")
+
+    # Move mouse without clicking
+    page.locator('button#mousehover').hover()
+    time.sleep(1)
+    page.get_by_role('link', name='Top').click()
+    time.sleep(1)

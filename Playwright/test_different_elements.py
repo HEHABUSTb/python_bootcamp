@@ -77,3 +77,4 @@ def test_mouse_hover(page: Page):
     time.sleep(1)
     page.get_by_role('link', name='Top').click()
     time.sleep(1)
+

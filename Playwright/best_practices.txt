@@ -1,0 +1,118 @@
+
+Best practices for Framework Design
+
+1. Avoid Hard-Coding Test Data
+  * Ensure that test data is injected from Tests rather than being hard-coded
+    within test methods. This enhances the generic code maintainability.
+
+2. Externalize Test Data
+  * Feed test data from external files (JSON, CSV, YAML, .env) to maintain
+    isolation between the test logic and data sources. This supports easier
+    maintenance and scalability.
+  * In pytest: use @pytest.mark.parametrize or load data in fixtures.
+
+3. Implement Page Object Model (POM)
+  * Apply the Page Object Design Pattern to separate page locators and actions
+    from test files. This improves code reusability, readability and
+    maintainability.
+  * Page objects contain locators + actions, NOT assertions (asserts live in tests).
+
+4. Centralize Reusable Code
+  * Use common utilities (utils.py) or configuration files (conftest.py) to
+    store reusable code across the framework. This avoids redundancy and
+    promotes consistency.
+  * Shared setup/teardown (browser, context, login, API client) -> fixtures
+    in conftest.py.
+
+5. Define Global Environment Variables
+  * Use global configuration values (base URL, browser, headless, timeouts,
+    credentials) to drive the execution without changing the code.
+  * Pass them via environment variables / CLI options
+    (e.g. pytest --browser firefox --base-url https://...).
+
+6. Apply Grouping / Tags to Run Targeted Tests
+  * Use pytest markers (@pytest.mark.smoke, @pytest.mark.regression) and run
+    subsets: pytest -m smoke
+  * Register markers in pytest.ini to avoid typos.
+
+7. Generate HTML Reports
+  * Integrate HTML reporting tools (pytest-html, Allure) to create detailed
+    test execution reports. These reports help analyze overall test coverage,
+    success rates and failures.
+
+8. Capture Logs & Screenshots
+  * Configure the framework to automatically generate logs and capture
+    screenshots for failed test cases. This helps in debugging and analysis.
+  * Playwright extras: --screenshot only-on-failure, --video retain-on-failure,
+    --tracing retain-on-failure (open with: playwright show-trace trace.zip).
+
+9. CI/CD Integration with Jenkins
+  * Integrate the framework with CI/CD tools like Jenkins (or GitHub Actions,
+    GitLab CI, Bamboo). Automate and schedule nightly builds to run tests
+    regularly and ensure consistent feedback loops.
+  * Run headless in CI, publish reports and traces as build artifacts.
+
+10. Integrate Cucumber BDD
+  * Incorporate Cucumber for Behavior Driven Development (BDD) to write
+    Gherkin syntax-based feature files. This improves test readability and
+    collaboration with non-technical stakeholders.
+  * Python equivalents: pytest-bdd, behave.
+
+
+Additional practices (not in the original list)
+
+11. Keep Tests Independent and Isolated
+  * Each test must be able to run alone and in any order.
+  * No shared state between tests: fresh BrowserContext per test
+    (pytest-playwright does this by default).
+  * Create and clean up own test data (setup/teardown via fixtures, yield).
+
+12. Use Reliable Locators
+  * Prefer user-facing locators: get_by_role, get_by_label, get_by_text,
+    get_by_test_id (data-testid).
+  * Avoid fragile XPath / long CSS chains tied to layout.
+
+13. No Hard Waits - Rely on Auto-Waiting
+  * Never use time.sleep() / page.wait_for_timeout() to "fix" flakiness.
+  * Use web-first assertions that retry automatically:
+    expect(locator).to_be_visible(), expect(page).to_have_url(...)
+  * Wait for concrete events: page.wait_for_response(...), expect_navigation.
+
+14. Speed Up Setup via API and Saved Auth State
+  * Do login once and reuse storage_state (cookies/localStorage) instead of
+    logging in through UI in every test.
+  * Prepare test data through API (APIRequestContext), check result through UI.
+  * Mock / intercept unstable 3rd-party calls with page.route().
+
+15. Parallel Execution
+  * Design tests to be parallel-safe (unique data, no shared accounts),
+    then run with pytest-xdist: pytest -n auto
+
+16. Handle Flaky Tests Explicitly
+  * Retries are a safety net, not a fix: pytest-rerunfailures (--reruns 2).
+  * Track flaky tests, investigate root cause, quarantine if needed.
+
+17. Clear Assertions and Naming
+  * One logical check per test; descriptive names:
+    test_login_with_invalid_password_shows_error
+  * Follow Arrange - Act - Assert structure.
+  * Add meaningful assertion messages.
+
+18. Keep Secrets Out of the Code
+  * Credentials and tokens go to .env / CI secrets, never into the repo.
+  * Add .env, reports, traces, screenshots to .gitignore.
+
+19. Code Quality of the Framework Itself
+  * Treat test code as production code: code review, linters (ruff/flake8),
+    formatter (black), type hints.
+  * Pin dependency versions (requirements.txt) for reproducible runs.
+
+20. Readable Project Structure
+    project/
+      pages/          - page objects
+      tests/          - test files (test_*.py)
+      test_data/      - json/csv files
+      utils/          - helpers, api clients
+      conftest.py     - fixtures
+      pytest.ini      - markers, default options
+      requirements.txt
